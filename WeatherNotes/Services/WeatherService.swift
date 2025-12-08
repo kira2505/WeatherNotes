@@ -16,8 +16,9 @@ struct WeatherInfo: Decodable {
 
 struct WeatherService {
     private let apiKey = "1e81fddada08f847f04696ba6f9cbd3a"
+    private let city = "Kyiv"
     
-    func getWeather(for city: String) async throws -> Weather {
+    func getWeather() async throws -> Weather {
         guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(city)&appid=\(apiKey)&units=metric") else {
             throw WeatherServiceError.badURL
         }

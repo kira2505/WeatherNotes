@@ -5,7 +5,7 @@ class NoteService {
     func createNote(_ text: String) {
         Task {
             do {
-                let weather = try await WeatherService().getWeather(for: "Kyiv")
+                let weather = try await WeatherService().getWeather()
                 
                 let note = Note(
                     id: UUID(),
