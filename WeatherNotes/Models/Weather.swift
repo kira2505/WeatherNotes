@@ -6,7 +6,7 @@ enum WeatherServiceError: Error {
     case decodingFailed
 }
 
-struct Weather {
+struct Weather: Codable {
     let temperature: Double
     let description: String
     let icon: String
