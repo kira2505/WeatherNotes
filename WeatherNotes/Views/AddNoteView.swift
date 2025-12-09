@@ -1,8 +1,10 @@
 import SwiftUI
 
 struct AddNoteView: View {
-    @StateObject private var viewModel = AddNoteViewModel()
+    @ObservedObject var viewModel: AddNoteViewModel
     
+    @Environment(\.dismiss) private var dismiss
+        
     var body: some View {
         VStack(spacing: 20) {
             TextField("Enter note", text: $viewModel.text)
@@ -11,6 +13,7 @@ struct AddNoteView: View {
             
             Button("Add Note") {
                 viewModel.addNote()
+                dismiss()
             }
             .buttonStyle(.borderedProminent)
         }

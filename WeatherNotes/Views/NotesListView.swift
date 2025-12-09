@@ -29,6 +29,16 @@ struct NotesListView: View {
                 }
             }
             .navigationTitle("Weather Notes")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink(destination: AddNoteView(viewModel: viewModel.viewModelAddNote)
+                        .onDisappear {
+                            viewModel.loadNotes()
+                        }){
+                        Text("Add new note")
+                    }
+                }
+            }
             .onAppear {
                 viewModel.loadNotes()
             }
