@@ -1,19 +1,5 @@
 import Foundation
 
-struct WeatherResponse: Decodable {
-    let main: Main
-    let weather: [WeatherInfo]
-}
-
-struct Main: Decodable {
-    let temp: Double
-}
-
-struct WeatherInfo: Decodable {
-    let description: String
-    let icon: String
-}
-
 struct WeatherService {
     private let apiKey = "1e81fddada08f847f04696ba6f9cbd3a"
     private let city = "Kyiv"
@@ -29,19 +15,13 @@ struct WeatherService {
             throw WeatherServiceError.requestFailed
         }
         
-        do {
-            let decode = try JSONDecoder().decode(WeatherResponse.self, from: data)
-            
-            let weather = Weather(
-                temperature: decode.main.temp,
-                description: decode.weather.first?.description ?? "N/A",
-                icon: decode.weather.first?.icon ?? "",
-                location: city
-            )
-            
-            return weather
-        } catch {
-         throw WeatherServiceError.decodingFailed
-        }
+        let decode = try JSONDecoder().decode(WeatherResponse.self, from: data)
+        
+        return Weather(
+            temperature: decode.main.temp,
+            description: decode.weather.first?.description ?? "N/A",
+            icon: decode.weather.first?.icon ?? "",
+            location: city
+        )
     }
 }
