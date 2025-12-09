@@ -3,6 +3,16 @@ import SwiftUI
 struct NotesListView: View {
     @StateObject var viewModel = NotesListViewModel()
     
+    @AppStorage("appTheme") private var appTheme: AppTheme = .system
+
+    private var themeIcon: String {
+        switch appTheme {
+        case .system: return "circle.lefthalf.filled"
+        case .light:  return "sun.max.fill"
+        case .dark:   return "moon.fill"
+        }
+    }
+    
     var body: some View {
         NavigationView {
             List(viewModel.notes) {note in
@@ -34,14 +44,31 @@ struct NotesListView: View {
                     NavigationLink(destination: AddNoteView(viewModel: viewModel.viewModelAddNote)
                         .onDisappear {
                             viewModel.loadNotes()
-                        }){
+                        }) {
                         Text("Add new note")
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: toggleTheme) {
+                        Image(systemName: themeIcon)
                     }
                 }
             }
             .onAppear {
                 viewModel.loadNotes()
             }
+        }
+    }
+    
+    private func toggleTheme() {
+        switch appTheme {
+        case .system:
+            appTheme = .light
+        case .light:
+            appTheme = .dark
+        case .dark:
+            appTheme = .system
         }
     }
 }

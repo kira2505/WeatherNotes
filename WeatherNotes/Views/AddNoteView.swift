@@ -20,4 +20,3 @@ struct AddNoteView: View {
         .navigationTitle("Add note")
     }
 }
-

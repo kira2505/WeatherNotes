@@ -1,8 +1,13 @@
 import Foundation
 
 class NoteService {
-    private let weatherService = WeatherService()
+    private let weatherService: WeatherService
+    
     private let storegeKey = "notes"
+    
+    init(weatherService: WeatherService = WeatherService()) {
+        self.weatherService = weatherService
+    }
     
     func createNote(_ text: String) async throws{
         let weather = try await weatherService.getWeather()
@@ -29,6 +34,12 @@ class NoteService {
               let notes = try? JSONDecoder().decode([Note].self, from: data)
         else { return [] }
         
-        return notes
+        return notes.sorted { $0.date > $1.date }
+    }
+    
+    func deleteNote(_ id: UUID) {
+        var notes = loadNotes()
+        notes.removeAll { $0.id == id }
+        saveNotes(notes)
     }
 }

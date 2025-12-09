@@ -3,6 +3,8 @@ import SwiftUI
 struct NoteDetailsView: View {
     @StateObject var viewModel: NoteDetailsViewModel
     
+    @Environment(\.dismiss) private var dismiss
+    
     init(note: Note) {
         _viewModel = StateObject(wrappedValue: NoteDetailsViewModel(note: note))
     }
@@ -41,5 +43,15 @@ struct NoteDetailsView: View {
         }
         .padding()
         .navigationTitle("Details")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(role: .destructive) {
+                    viewModel.deleteNote()
+                    dismiss()
+                } label: {
+                    Image(systemName: "trash")
+                }
+            }
+        }
     }
 }

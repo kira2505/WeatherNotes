@@ -5,6 +5,8 @@ import Combine
 class NoteDetailsViewModel: ObservableObject {
     let note: Note
     
+    private let noteService = NoteService()
+    
     init(note: Note) {
         self.note = note
     }
@@ -28,5 +30,8 @@ class NoteDetailsViewModel: ObservableObject {
     func weatherIconName() -> String {
         WeatherIconMapper.map(note.weather.icon)
     }
+    
+    func deleteNote() {
+        noteService.deleteNote(note.id)
+    }
 }
-
