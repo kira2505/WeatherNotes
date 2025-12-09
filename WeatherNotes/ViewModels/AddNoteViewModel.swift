@@ -4,25 +4,19 @@ import Combine
 @MainActor
 class AddNoteViewModel: ObservableObject {
     @Published var text: String = ""
-    @Published var notes: [Note] = []
     
     private let noteService = NoteService()
     
-    init() {
-        loadNotes()
-    }
-    
     func addNote() {
+        guard !text.trimmingCharacters(in: .whitespaces).isEmpty else { return }
+        
         Task {
-            noteService.createNote(text)
-            
-            loadNotes()
-            
-            text = ""
+            do {
+                try await noteService.createNote(text)
+                text = ""
+            } catch {
+                print("Error: \(error)")
+            }
         }
-    }
-    
-    func loadNotes() {
-        notes = noteService.loadNotes()
     }
 }
